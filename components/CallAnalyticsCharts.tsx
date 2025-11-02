@@ -20,6 +20,8 @@ import {
 import EmailModal from './EmailModal'
 import { ChartData } from '@/types'
 
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658']
+
 const initialData: ChartData = {
   callDuration: [
     { name: 'Short (<2min)', duration: 45 },
@@ -37,7 +39,10 @@ const initialData: ChartData = {
   ]
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658']
+// Simple label function that avoids the percent issue
+const renderLabel = (entry: any) => {
+  return `${entry.name}: ${entry.value}`
+}
 
 export default function CallAnalyticsCharts() {
   const [chartData, setChartData] = useState<ChartData>(initialData)
@@ -174,9 +179,9 @@ export default function CallAnalyticsCharts() {
           </p>
           {email && (
             <div className="mt-4 inline-flex items-center space-x-2 bg-green-50 px-4 py-2 rounded-full">
-              <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
+              <div className="w-4 h-4 bg-green-600 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs">✓</span>
+              </div>
               <span className="text-green-800 text-sm">Logged in as: {email}</span>
             </div>
           )}
@@ -219,7 +224,6 @@ export default function CallAnalyticsCharts() {
                       angle: -90, 
                       position: 'insideLeft',
                       offset: -10,
-                      style: { textAnchor: 'middle' }
                     }}
                   />
                   <Tooltip 
@@ -247,7 +251,7 @@ export default function CallAnalyticsCharts() {
             </div>
           </div>
 
-          {/* Sad Path Analysis */}
+          {/* Sad Path Analysis - Fixed Pie Chart */}
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
               <div>
@@ -272,10 +276,8 @@ export default function CallAnalyticsCharts() {
                     data={chartData.sadPath}
                     cx="50%"
                     cy="50%"
-                    labelLine={true}
-                    label={({ name, percent }) => 
-                      `${name}: ${(percent * 100).toFixed(1)}%`
-                    }
+                    labelLine={false}
+                    label={renderLabel}
                     outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
@@ -365,7 +367,7 @@ export default function CallAnalyticsCharts() {
                     <div className="flex items-center space-x-2">
                       <input
                         type="number"
-                        value={getValue(item)}
+                        value={getValue(item) || 0}
                         onChange={(e) => updateTempValue(index, parseInt(e.target.value) || 0)}
                         className="w-20 p-2 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         min="0"

@@ -1,7 +1,6 @@
 // app/api/user-charts/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/superbase'
-import { isValidEmail } from '@/lib/utils'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +13,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!isValidEmail(email)) {
+    // Basic email validation
+    if (!email.includes('@')) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }

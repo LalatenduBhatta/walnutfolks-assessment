@@ -1,7 +1,6 @@
 // app/api/v1/webhooks/transactions/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/superbase'
-import { WebhookPayload } from '@/types'
 
 // In-memory store for tracking processing transactions (for idempotency)
 const processingTransactions = new Set<string>()
@@ -10,7 +9,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now()
   
   try {
-    const body: WebhookPayload = await request.json()
+    const body = await request.json()
     
     console.log('Received webhook:', body)
     

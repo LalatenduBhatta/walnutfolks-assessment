@@ -1,4 +1,4 @@
-// app/api/route.ts - Health Check
+// app/api/route.ts
 import { NextResponse } from 'next/server'
 
 export async function GET() {

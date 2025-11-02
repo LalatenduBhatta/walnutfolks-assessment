@@ -2,7 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['uuid'],
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
   },
   async headers() {
     return [
@@ -18,4 +18,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export {nextConfig}

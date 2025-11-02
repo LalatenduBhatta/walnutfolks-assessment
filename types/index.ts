@@ -20,10 +20,13 @@ export interface WebhookPayload {
   currency?: string;
 }
 
+// Recharts compatible types with index signature
 export interface ChartDataItem {
   name: string;
   value?: number;
   duration?: number;
+  // Index signature for Recharts compatibility
+  [key: string]: any;
 }
 
 export interface ChartData {
